@@ -1,64 +1,83 @@
-let url = "https://goweather.herokuapp.com/weather/";
-let btn = document.querySelector("button");
-let input = document.querySelector("input");
-let t1 = document.querySelector(".t1");
-let w1 = document.querySelector(".w1");
-let d1 = document.querySelector(".d1");
+const url = "https://goweather.herokuapp.com/weather/";
+const btn = document.getElementById("searchBtn");
+const cityInput = document.getElementById("cityInput");
+const t1 = document.querySelector(".t1");
+const w1 = document.querySelector(".w1");
+const d1 = document.querySelector(".d1");
+const t2 = document.querySelector(".t2");
+const w2 = document.querySelector(".w2");
+const t3 = document.querySelector(".t3");
+const w3 = document.querySelector(".w3");
+const t4 = document.querySelector(".t4");
+const w4 = document.querySelector(".w4");
 
-let t2 = document.querySelector(".t2");
-let w2 = document.querySelector(".w2");
-let d2 = document.querySelector(".d2");
-
-let t3 = document.querySelector(".t3");
-let w3 = document.querySelector(".w3");
-let d3 = document.querySelector(".d3");
-
-let t4 = document.querySelector(".t4");
-let w4 = document.querySelector(".w4");
-let d4 = document.querySelector(".d4");
-btn.addEventListener("click", async() => {
-    let input = document.querySelector("input").value;
-
-    t1.innerText = `Temperature :`;
-    w1.innerText = `Wind : `;
-    d1.innerText = `Weather : `;
-
-    t2.innerText = `Temperature : `;
-    w2.innerText = `Wind :`;
-
-    t3.innerText = `Temperature : `;
-    w3.innerText = `Wind : `;
-
-    t4.innerText = `Temperature : `;
-    w4.innerText = `Wind :`;
-
-
-    let arr = await getweather(input);
-    t1.innerText = `Temperature : ${arr.temperature}`;
-    w1.innerText = `Wind : ${arr.wind}`;
-    d1.innerText = `Weather : ${arr.description}`;
-
-    let objarr = arr.forecast;
-
-    t2.innerText = `Temperature : ${objarr[0].temperature}`;
-    w2.innerText = `Wind : ${objarr[0].wind}`;
-
-    t3.innerText = `Temperature : ${objarr[1].temperature}`;
-    w3.innerText = `Wind : ${objarr[1].wind}`;
-
-
-    t4.innerText = `Temperature : ${objarr[2].temperature}`;
-    w4.innerText = `Wind : ${objarr[2].wind}`;
-
+// Add event listeners for both button click and Enter key
+btn.addEventListener("click", fetchWeather);
+cityInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        fetchWeather();
+    }
 });
 
-async function getweather(city) {
-
-    try {
-        let res = await axios.get(url + city);
-        return res.data;
-
-    } catch (e) {
-        console.log(e);
+async function fetchWeather() {
+    const city = cityInput.value.trim();
+    
+    if (!city) {
+        alert("Please enter a city name");
+        return;
     }
-};
+
+    // Clear previous data
+    clearWeatherData();
+    
+    try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+        btn.disabled = true;
+        
+        const weatherData = await getWeather(city);
+        updateWeatherUI(weatherData);
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+        alert("Failed to fetch weather data. Please try again.");
+    } finally {
+        btn.innerHTML = '<i class="fas fa-search"></i> Search';
+        btn.disabled = false;
+    }
+}
+
+function clearWeatherData() {
+    t1.textContent = "Temperature: --";
+    w1.textContent = "Wind: --";
+    d1.textContent = "Description: --";
+    t2.textContent = "Temperature: --";
+    w2.textContent = "Wind: --";
+    t3.textContent = "Temperature: --";
+    w3.textContent = "Wind: --";
+    t4.textContent = "Temperature: --";
+    w4.textContent = "Wind: --";
+}
+
+function updateWeatherUI(data) {
+    t1.textContent = `Temperature: ${data.temperature || 'N/A'}`;
+    w1.textContent = `Wind: ${data.wind || 'N/A'}`;
+    d1.textContent = `Description: ${data.description || 'N/A'}`;
+
+    if (data.forecast && data.forecast.length >= 3) {
+        t2.textContent = `Temperature: ${data.forecast[0].temperature || 'N/A'}`;
+        w2.textContent = `Wind: ${data.forecast[0].wind || 'N/A'}`;
+        t3.textContent = `Temperature: ${data.forecast[1].temperature || 'N/A'}`;
+        w3.textContent = `Wind: ${data.forecast[1].wind || 'N/A'}`;
+        t4.textContent = `Temperature: ${data.forecast[2].temperature || 'N/A'}`;
+        w4.textContent = `Wind: ${data.forecast[2].wind || 'N/A'}`;
+    }
+}
+
+async function getWeather(city) {
+    try {
+        const res = await axios.get(url + city);
+        return res.data;
+    } catch (error) {
+        console.error("Error in getWeather:", error);
+        throw error;
+    }
+}
