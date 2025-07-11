@@ -1,71 +1,141 @@
 * {
     padding: 0;
     margin: 0;
-    text-align: center;
+    box-sizing: border-box;
+    font-family: "Poppins", "Segoe UI", sans-serif;
 }
 
 body {
     background: url("sky.avif");
     background-size: cover;
+    color: #fff;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+h1.title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    font-weight: 600;
+    background: linear-gradient(to right, #fff, #b3e5fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ib {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input {
+    flex: 1;
+    height: 50px;
+    border: none;
+    padding: 0 20px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+}
+
+button {
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(to right, #00b4db, #0083b0);
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    background: linear-gradient(to right, #0083b0, #00b4db);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 
 .day {
     display: grid;
-    justify-items: center;
-    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
-    margin-top: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.day1, .day2, .day3, .day4 {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
 }
 
 .day1 {
-    border: 2px solid black;
-    width: 300px;
-    height: 150px;
-    text-align: center;
-    justify-content: center;
+    background: rgba(255, 255, 255, 0.15);
 }
 
-.day2 {
-    border: 2px solid black;
-    width: 300px;
-    height: 120px;
-    text-align: center;
-    justify-content: center;
+.day1:hover, .day2:hover, .day3:hover, .day4:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
-.day3 {
-    border: 2px solid black;
-    width: 300px;
-    height: 120px;
-    text-align: center;
-    justify-content: center;
+.day h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #fff;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
 }
 
-.day4 {
-    border: 2px solid black;
-    width: 300px;
-    height: 120px;
-    text-align: center;
-    justify-content: center;
+.day h3 {
+    font-weight: 400;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
 }
 
-.ib {
-    margin-top: 20px;
+.day h3:before {
+    content: "•";
+    color: #00b4db;
+    margin-right: 10px;
+    font-size: 1.5rem;
 }
 
-input {
-    width: 200px;
-    height: 30px;
-    border: 2px solid black;
-    background-color: #bff3ed;
-    color: black;
-    border-radius: 10px;
-}
-
-button {
-    width: 95px;
-    background-color: black;
-    color: white;
-    height: 30px;
-    border-radius: 5px;
+@media (max-width: 768px) {
+    .day {
+        grid-template-columns: 1fr;
+    }
+    
+    .ib {
+        flex-direction: column;
+    }
+    
+    input, button {
+        width: 100%;
+    }
 }
